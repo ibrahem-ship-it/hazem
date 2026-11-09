@@ -3,260 +3,458 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rosey - الفخامة والندرة</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
+    <title>حازم محمد | الجوكر</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        'rosey-cream': '#FDFBF7', 
-                        'rosey-gold': '#A78A5B',  
-                        'rosey-gold-dark': '#806840', 
-                        'rosey-gold-light': '#C5AE80', 
-                        'rosey-red': '#6B1F2B',   
-                        'rosey-green': '#3B5336', 
-                        'rosey-dark': '#2A2A2A',  
-                    },
                     fontFamily: {
-                        'cinzel': ['Cinzel', 'serif'], 
-                        'playfair': ['Playfair Display', 'serif'],
-                        'tajawal': ['Tajawal', 'sans-serif'],
+                        sans: ['Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#f59e0b', // Amber/Gold
+                        dark: '#0f172a', // Slate 900
+                        darker: '#020617', // Slate 950
+                        card: '#1e293b', // Slate 800
                     }
                 }
             }
         }
     </script>
-    
     <style>
         body {
-            font-family: 'Tajawal', sans-serif;
-            background-color: #FDFBF7; 
-            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20.5V18H0v-2h20v-2H0v-2h20v-2H0V8h20V6H0V4h20V2H0V0h22v20h2V0h2v20h2V0h2v20h2V0h2v20h2V0h2v20h2v2H20v-1.5zM0 20h2v20H0V20zm4 0h2v20H4V20zm4 0h2v20H8V20zm4 0h2v20h-2V20zm4 0h2v20h-2V20zm4 4h20v2H20v-2zm0 4h20v2H20v-2zm0 4h20v2H20v-2zm0 4h20v2H20v-2z' fill='%23a78a5b' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
-            color: #2A2A2A; 
-            margin: 0;
-            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            background-color: #020617;
+            color: #f8fafc;
             overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #f59e0b; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d97706; 
         }
 
-        .text-gold-gradient {
-            background: linear-gradient(to bottom, #C5AE80 0%, #A78A5B 50%, #806840 100%);
+        /* Reveal Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(to left, #f59e0b, #fbbf24);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0px 1px 2px rgba(0,0,0,0.1);
         }
 
-        .border-gold-gradient {
-            border-image: linear-gradient(to right, #C5AE80, #A78A5B, #806840) 1;
+        /* Floating Element */
+        .floating {
+            animation: floating 3s ease-in-out infinite;
         }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #FDFBF7; }
-        ::-webkit-scrollbar-thumb { background: #A78A5B; border-radius: 10px; }
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
     </style>
-
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
-<body>
+<body class="antialiased selection:bg-primary selection:text-white">
 
-    <div id="root"></div>
-
-    <script type="text/babel">
-        const { useState } = React;
-
-        const App = () => {
-            const [activeView, setActiveView] = useState('home');
-            const [activeCategory, setActiveCategory] = useState('الكل');
-            
-            const [customStep, setCustomStep] = useState(1);
-            const [selectedType, setSelectedType] = useState(null); 
-            const [selectedChain, setSelectedChain] = useState(null); 
-            const [selectedCharm, setSelectedCharm] = useState(null); 
-
-            const categories = ['الكل', 'سلاسل', 'انسيالات', 'حلقان'];
-            
-            const dummyProducts = [
-                { id: 1, name: 'قلادة الملكة', category: 'سلاسل', qty: 3 },
-                { id: 2, name: 'سوار الليل', category: 'انسيالات', qty: 10 },
-                { id: 3, name: 'حلق اللؤلؤ', category: 'حلقان', qty: 0 },
-            ];
-
-            const filteredProducts = activeCategory === 'الكل' 
-                ? dummyProducts 
-                : dummyProducts.filter(p => p.category === activeCategory);
-
-            return (
-                <div className="min-h-screen relative flex flex-col pb-10">
-                    
-                    {/* Header Logo */}
-                    <header className="flex justify-center pt-10 pb-4 z-10 w-full">
-                        <div 
-                            className="flex flex-col items-center cursor-pointer transition-transform duration-300 hover:scale-105" 
-                            onClick={() => {setActiveView('home'); setCustomStep(1);}}
-                        >
-                            <img src="https://drive.google.com/uc?export=view&id=1pSjxTLzTJ6T07EEVIUOezJz9EPGm_j5T" alt="Rosey Logo" className="w-[300px] h-auto object-contain drop-shadow-md rounded-xl mix-blend-multiply" />
-                        </div>
-                    </header>
-
-                    {/* Home Screen */}
-                    {activeView === 'home' && (
-                        <main className="flex-grow flex flex-col items-center justify-between mt-4 z-10 relative h-[60vh]">
-                            
-                            <p className="text-2xl text-rosey-gold-dark font-tajawal font-light tracking-widest mt-6 text-center px-4 leading-relaxed">
-                                الفخامة والندرة.. <br/> <span className="text-rosey-red italic font-playfair text-3xl">تعكس تفردك</span>
-                            </p>
-                            
-                            <div className="absolute bottom-10 flex space-x-10 space-x-reverse">
-                                <button 
-                                    onClick={() => setActiveView('customizer')}
-                                    className="w-44 h-44 bg-rosey-cream border border-rosey-gold text-rosey-gold-dark text-2xl font-cinzel uppercase tracking-widest rounded-none hover:bg-rosey-gold hover:text-white transition duration-500 shadow-lg flex items-center justify-center text-center p-4 group relative overflow-hidden">
-                                    <div className="absolute inset-0 border-2 border-rosey-gold/50 m-2 transition-transform duration-500 group-hover:scale-95"></div>
-                                    <span className="relative z-10 font-tajawal font-medium">صمم<br/>قطعتك</span>
-                                </button>
-                                
-                                <button 
-                                    onClick={() => setActiveView('limited')}
-                                    className="w-44 h-44 bg-rosey-red text-rosey-cream text-2xl font-cinzel uppercase tracking-widest rounded-none hover:bg-white hover:text-rosey-red hover:border-rosey-red border border-transparent transition duration-500 shadow-lg flex items-center justify-center text-center p-4 group relative overflow-hidden">
-                                    <div className="absolute inset-0 border-2 border-white/30 m-2 transition-transform duration-500 group-hover:scale-95 group-hover:border-rosey-red/30"></div>
-                                    <span className="relative z-10 font-tajawal font-medium">الإصدارات<br/>المحدودة</span>
-                                </button>
-                            </div>
-                        </main>
-                    )}
-
-                    {/* Limited Editions Screen */}
-                    {activeView === 'limited' && (
-                        <section className="max-w-6xl mx-auto mt-4 p-4 z-10 relative w-full">
-                            <div className="flex items-center justify-center mb-10">
-                                <div className="h-[1px] bg-rosey-gold flex-grow max-w-[100px]"></div>
-                                <h2 className="text-4xl font-light text-center px-6 text-rosey-gold-dark font-tajawal">الإصدارات المحدودة</h2>
-                                <div className="h-[1px] bg-rosey-gold flex-grow max-w-[100px]"></div>
-                            </div>
-                            
-                            <div className="flex justify-center space-x-4 space-x-reverse mb-12">
-                                {categories.map(cat => (
-                                    <button 
-                                        key={cat}
-                                        onClick={() => setActiveCategory(cat)}
-                                        className={`px-8 py-2 text-lg rounded-none transition-all duration-300 border-b-2 font-tajawal ${
-                                            activeCategory === cat ? 'text-rosey-red border-rosey-red font-medium' : 'text-gray-500 border-transparent hover:text-rosey-gold hover:border-rosey-gold-light'
-                                        }`}>
-                                        {cat}
-                                    </button>
-                                ))}
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-                                {filteredProducts.map(product => (
-                                    <div key={product.id} className="bg-white border border-rosey-gold-light/40 p-5 hover:shadow-xl transition-all duration-300 flex flex-col group relative overflow-hidden">
-                                        <div className="absolute top-0 right-0 w-16 h-16 bg-rosey-gold/10 rounded-bl-full -z-10 transition-transform group-hover:scale-150"></div>
-                                        
-                                        <div className="w-full h-72 bg-[#F8F5F0] flex items-center justify-center mb-6 relative border border-gray-100">
-                                            {product.qty === 0 && <div className="absolute inset-0 bg-white/80 backdrop-blur-[2px] flex items-center justify-center text-rosey-red font-bold text-3xl tracking-widest z-10 font-cinzel border-4 border-rosey-red/20 m-4">SOLD OUT</div>}
-                                            <span className="text-rosey-gold-light font-light text-sm italic">Image Placeholder</span>
-                                        </div>
-                                        
-                                        <h3 className="text-2xl mb-2 text-rosey-dark font-tajawal font-medium text-center">{product.name}</h3>
-                                        <div className="w-12 h-[1px] bg-rosey-gold/50 mx-auto mb-4"></div>
-                                        
-                                        <p className={`text-sm mb-6 text-center font-tajawal ${product.qty > 0 ? 'text-gray-500' : 'text-rosey-red font-medium'}`}>
-                                            الكمية المتبقية: {product.qty} / 10
-                                        </p>
-                                        
-                                        <button disabled={product.qty === 0} className={`mt-auto w-full py-4 rounded-none text-lg font-tajawal tracking-wide transition-colors ${product.qty > 0 ? 'bg-rosey-dark text-rosey-cream hover:bg-rosey-gold' : 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'}`}>
-                                            إضافة للعربة
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                        </section>
-                    )}
-
-                    {/* Customizer Screen */}
-                    {activeView === 'customizer' && (
-                        <section className="max-w-7xl mx-auto mt-4 p-4 flex flex-col md:flex-row gap-10 z-10 relative w-full">
-                            
-                            <div className="md:w-1/2 bg-white border border-rosey-gold/30 h-[700px] flex flex-col items-center justify-center p-8 shadow-sm relative">
-                                <div className="absolute top-4 left-4 w-4 h-4 border-t border-l border-rosey-gold"></div>
-                                <div className="absolute top-4 right-4 w-4 h-4 border-t border-r border-rosey-gold"></div>
-                                <div className="absolute bottom-4 left-4 w-4 h-4 border-b border-l border-rosey-gold"></div>
-                                <div className="absolute bottom-4 right-4 w-4 h-4 border-b border-r border-rosey-gold"></div>
-
-                                <h3 className="text-3xl font-light mb-10 text-rosey-gold-dark font-tajawal">معاينة التصميم</h3>
-                                
-                                <div className="w-72 h-72 border border-rosey-gold-light/50 flex items-center justify-center bg-[#FDFBF7] mb-10 shadow-inner rounded-full relative">
-                                    <div className="absolute inset-2 border border-dashed border-rosey-gold-light/40 rounded-full"></div>
-                                    <span className="text-rosey-gold-light text-sm text-center font-tajawal px-4">سيظهر التصميم المدمج هنا بشكل أنيق</span>
-                                </div>
-                                
-                                <div className="text-center space-y-4 text-rosey-dark font-tajawal w-full max-w-xs">
-                                    <div className="flex justify-between border-b border-gray-100 pb-2">
-                                        <span className="text-gray-500">القطعة:</span>
-                                        <span className="font-medium">{selectedType || '---'}</span>
-                                    </div>
-                                    <div className="flex justify-between border-b border-gray-100 pb-2">
-                                        <span className="text-gray-500">السلسلة:</span>
-                                        <span className="font-medium">{selectedChain ? `شكل ${selectedChain}` : '---'}</span>
-                                    </div>
-                                    <div className="flex justify-between pb-2">
-                                        <span className="text-gray-500">الدلاية:</span>
-                                        <span className="font-medium">{selectedCharm ? `رقم ${selectedCharm}` : '---'}</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="md:w-1/2 flex flex-col gap-6">
-                                
-                                <div className="p-6 bg-white border border-rosey-gold/20 shadow-sm">
-                                    <h3 className="text-xl mb-4 text-rosey-dark font-tajawal border-r-4 border-rosey-red pr-3">1. اختر نوع القطعة</h3>
-                                    <div className="flex gap-4 mt-6">
-                                        {['سلسلة', 'انسيال', 'حلق'].map(type => (
-                                            <button key={type} onClick={() => {setSelectedType(type); setCustomStep(2);}} 
-                                                className={`flex-1 py-4 border rounded-none font-tajawal transition-all ${selectedType === type ? 'border-rosey-gold bg-rosey-gold text-white shadow-md' : 'border-gray-200 bg-gray-50/50 text-gray-600 hover:border-rosey-gold-light hover:bg-[#FDFBF7]'}`}>
-                                                {type}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                <div className={`p-6 bg-white border border-rosey-gold/20 shadow-sm transition-all duration-500 ${customStep >= 2 ? 'opacity-100 translate-y-0' : 'opacity-40 pointer-events-none translate-y-4'}`}>
-                                    <h3 className="text-xl mb-4 text-rosey-dark font-tajawal border-r-4 border-rosey-red pr-3">2. شكل السلسلة</h3>
-                                    <div className="grid grid-cols-5 gap-3 mt-6">
-                                        {[1, 2, 3, 4, 5].map(chain => (
-                                            <button key={chain} onClick={() => {setSelectedChain(chain); setCustomStep(3);}} 
-                                                className={`aspect-square border flex items-center justify-center text-xs font-tajawal transition-all ${selectedChain === chain ? 'border-rosey-gold bg-rosey-gold/10 text-rosey-dark' : 'border-gray-200 bg-[#FDFBF7] hover:border-rosey-gold-light hover:shadow-sm text-gray-500'}`}>
-                                                نمط {chain}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                <div className={`p-6 bg-white border border-rosey-gold/20 shadow-sm transition-all duration-500 flex-1 flex flex-col ${customStep >= 3 ? 'opacity-100 translate-y-0' : 'opacity-40 pointer-events-none translate-y-4'}`}>
-                                    <h3 className="text-xl mb-4 text-rosey-dark font-tajawal border-r-4 border-rosey-red pr-3">3. اختر الدلاية (100 تصميم فريد)</h3>
-                                    <div className="grid grid-cols-6 sm:grid-cols-8 gap-2 h-64 overflow-y-auto p-3 border border-gray-100 bg-[#F8F5F0]/50 mt-4">
-                                        {Array.from({length: 100}).map((_, i) => (
-                                            <button key={i} onClick={() => setSelectedCharm(i+1)} 
-                                                className={`aspect-square border flex items-center justify-center text-xs font-tajawal transition-all rounded-sm ${selectedCharm === i+1 ? 'border-rosey-gold bg-rosey-gold text-white shadow-md transform scale-110' : 'border-gray-200 bg-white hover:border-rosey-gold-light hover:bg-[#FDFBF7] text-gray-600'}`}>
-                                                {i + 1}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-
-                            </div>
-                        </section>
-                    )}
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-darker/90 backdrop-blur-md border-b border-gray-800 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" class="text-2xl font-black tracking-tighter text-white">
+                        حازم <span class="text-primary">محمد</span>
+                    </a>
                 </div>
-            );
-        };
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 space-x-reverse">
+                    <a href="#home" class="text-gray-300 hover:text-primary transition-colors font-semibold text-lg">الرئيسية</a>
+                    <a href="#skills" class="text-gray-300 hover:text-primary transition-colors font-semibold text-lg">مهاراتي</a>
+                    <a href="#joker" class="text-gray-300 hover:text-primary transition-colors font-semibold text-lg">لماذا الجوكر؟</a>
+                    <a href="#center" class="text-gray-300 hover:text-primary transition-colors font-semibold text-lg">سنتر الدروس</a>
+                    <a href="#contact" class="text-gray-300 hover:text-primary transition-colors font-semibold text-lg">تواصل معي</a>
+                </div>
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-white focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-dark border-b border-gray-800 absolute w-full">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
+                <a href="#home" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary hover:bg-gray-800 rounded-md">الرئيسية</a>
+                <a href="#skills" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary hover:bg-gray-800 rounded-md">مهاراتي</a>
+                <a href="#joker" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary hover:bg-gray-800 rounded-md">الجوكر</a>
+                <a href="#center" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary hover:bg-gray-800 rounded-md">سنتر الدروس</a>
+                <a href="#contact" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary hover:bg-gray-800 rounded-md">تواصل معي</a>
+            </div>
+        </div>
+    </nav>
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+    <!-- Hero Section -->
+    <section id="home" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden min-h-screen flex items-center">
+        <!-- Background Elements -->
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-72 h-72 rounded-full bg-primary/10 blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 rounded-full bg-blue-900/20 blur-3xl"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <span class="inline-block py-1 px-3 rounded-full bg-card border border-gray-700 text-primary font-semibold text-sm mb-6 floating">
+                <i class="fas fa-crown ml-2"></i> الجوكر الذي تحتاجه أي شركة
+            </span>
+            <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
+                أنا <span class="text-gradient">حازم محمد</span><br>
+                أكثر من مجرد موظف.. أنا منظومة متكاملة!
+            </h1>
+            <p class="mt-4 text-xl text-gray-400 max-w-3xl mx-auto mb-10 leading-relaxed">
+                خبرة شاملة تجمع بين دقة لغة الأرقام (الحسابات)، وإبداع التصميم والمونتاج، وقوة الانتشار في الماركتينج والسوشيال ميديا.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#skills" class="px-8 py-4 bg-primary hover:bg-yellow-500 text-darker font-bold rounded-lg transition-all transform hover:-translate-y-1 shadow-[0_0_20px_rgba(245,158,11,0.4)] text-lg">
+                    اكتشف مهاراتي <i class="fas fa-arrow-down mr-2"></i>
+                </a>
+                <a href="#center" class="px-8 py-4 bg-transparent border-2 border-primary text-primary hover:bg-primary/10 font-bold rounded-lg transition-all text-lg">
+                    جديد: سنتر الدروس <i class="fas fa-star mr-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 bg-dark border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-5xl font-black text-white mb-4">ماذا أقدم لشركتك؟</h2>
+                <div class="w-24 h-1 bg-primary mx-auto rounded-full"></div>
+                <p class="mt-4 text-gray-400 text-lg">مزيج نادر من المهارات يغنيك عن فريق كامل</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Skill 1 -->
+                <div class="bg-card p-8 rounded-2xl border border-gray-700 hover:border-primary transition-colors group reveal">
+                    <div class="w-16 h-16 bg-blue-900/30 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-calculator text-3xl text-blue-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">الحسابات والمالية</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        دقة متناهية في إدارة الأرقام، الميزانيات، وضبط الحسابات لضمان الاستقرار والنمو المالي للشركة.
+                    </p>
+                </div>
+
+                <!-- Skill 2 -->
+                <div class="bg-card p-8 rounded-2xl border border-gray-700 hover:border-primary transition-colors group reveal" style="transition-delay: 100ms;">
+                    <div class="w-16 h-16 bg-pink-900/30 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-share-nodes text-3xl text-pink-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">السوشيال ميديا</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        إدارة منصات التواصل الاجتماعي باحترافية، بناء مجتمعات تفاعلية، وزيادة ولاء العملاء للعلامة التجارية.
+                    </p>
+                </div>
+
+                <!-- Skill 3 -->
+                <div class="bg-card p-8 rounded-2xl border border-gray-700 hover:border-primary transition-colors group reveal" style="transition-delay: 200ms;">
+                    <div class="w-16 h-16 bg-green-900/30 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-bullseye text-3xl text-green-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">الماركتينج (التسويق)</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        وضع خطط تسويقية مبتكرة، إدارة الحملات الإعلانية، وتحقيق أعلى عائد على الاستثمار (ROI).
+                    </p>
+                </div>
+
+                <!-- Skill 4 -->
+                <div class="bg-card p-8 rounded-2xl border border-gray-700 hover:border-primary transition-colors group reveal" style="transition-delay: 300ms;">
+                    <div class="w-16 h-16 bg-purple-900/30 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-film text-3xl text-purple-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">فيديو إيديتور (مونتاج)</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        صناعة فيديوهات احترافية وجذابة، قص وتعديل وإضافة المؤثرات لإنتاج محتوى بصري يخطف الأنظار.
+                    </p>
+                </div>
+
+                <!-- Skill 5 -->
+                <div class="bg-card p-8 rounded-2xl border border-gray-700 hover:border-primary transition-colors group reveal" style="transition-delay: 400ms;">
+                    <div class="w-16 h-16 bg-yellow-900/30 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-pen-nib text-3xl text-yellow-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">جرافيك ديزاين</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        تصميم هويات بصرية، بوستات، ومطبوعات تعبر عن رؤية الشركة بلمسة فنية إبداعية وعصرية.
+                    </p>
+                </div>
+                
+                <!-- Skill 6 - The Joker -->
+                <div class="bg-gradient-to-br from-primary/20 to-primary/5 p-8 rounded-2xl border border-primary relative overflow-hidden group reveal" style="transition-delay: 500ms;">
+                    <div class="absolute -right-10 -top-10 text-primary opacity-10 text-9xl">
+                        <i class="fas fa-chess-knight"></i>
+                    </div>
+                    <div class="w-16 h-16 bg-primary rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform relative z-10">
+                        <i class="fas fa-bolt text-3xl text-darker"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3 relative z-10">إدارة الأزمات وحل المشاكل</h3>
+                    <p class="text-gray-300 leading-relaxed relative z-10">
+                        لأني أفهم في كل الأقسام، أستطيع ربط النقاط ببعضها وسد أي عجز في الفريق بكفاءة وسرعة.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Joker Concept Section -->
+    <section id="joker" class="py-24 bg-darker relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <div class="w-full lg:w-1/2 reveal">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-primary/20 blur-3xl rounded-full"></div>
+                        <!-- Using placeholder for personal photo, stylized -->
+                        <img src="https://placehold.co/600x600/1e293b/f59e0b?text=Hazem+The+Joker" alt="حازم محمد" class="relative rounded-2xl shadow-2xl border border-gray-700 w-full object-cover aspect-square">
+                        <div class="absolute -bottom-6 -right-6 bg-card border-2 border-primary text-white p-4 rounded-xl shadow-xl">
+                            <p class="text-3xl font-black text-primary">100%</p>
+                            <p class="text-sm font-bold">التزام واحترافية</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full lg:w-1/2 reveal">
+                    <h2 class="text-4xl md:text-5xl font-black text-white mb-6">لماذا يلقبونني بـ <span class="text-primary">"الجوكر"</span>؟</h2>
+                    <p class="text-gray-300 text-lg mb-6 leading-relaxed">
+                        في عالم الأعمال السريع، نادراً ما تجد شخصاً يفهم لغة الأرقام الصارمة (كالمحاسب) وفي نفس الوقت يمتلك الخيال الجامح (كالمصمم والمونتير)، بالإضافة لمهارات البيع والانتشار (التسويق).
+                    </p>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-primary mt-1 ml-3 text-xl"></i>
+                            <div>
+                                <h4 class="font-bold text-white text-lg">توفير الوقت والموارد</h4>
+                                <p class="text-gray-400">بدلاً من توظيف 5 أشخاص لمهام مختلفة، يمكنني إدارة المشهد بالكامل.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-primary mt-1 ml-3 text-xl"></i>
+                            <div>
+                                <h4 class="font-bold text-white text-lg">رؤية شاملة للمشروع</h4>
+                                <p class="text-gray-400">أصمم الإعلان وأنا أعرف ميزانيته، وأقوم بمونتاجه وأنا أعرف الجمهور المستهدف.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-primary mt-1 ml-3 text-xl"></i>
+                            <div>
+                                <h4 class="font-bold text-white text-lg">مرونة وسرعة بديهة</h4>
+                                <p class="text-gray-400">أتكيف مع أي وضع في الشركة وأسد الثغرات فوراً.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Educational Center Promo -->
+    <section id="center" class="py-24 bg-dark relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(#f59e0b 2px, transparent 2px); background-size: 30px 30px;"></div>
+        
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="bg-gradient-to-r from-card to-dark border border-gray-700 rounded-3xl p-8 md:p-12 shadow-2xl reveal relative overflow-hidden">
+                <!-- Decorative Element -->
+                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-bl-full"></div>
+                
+                <div class="flex flex-col md:flex-row items-center gap-10">
+                    <div class="w-full md:w-2/3">
+                        <div class="inline-block py-1 px-3 rounded-full bg-primary/20 text-primary font-bold text-sm mb-4 border border-primary/30">
+                            <i class="fas fa-rocket ml-2"></i> الإعلان الأكبر قريباً
+                        </div>
+                        <h2 class="text-3xl md:text-5xl font-black text-white mb-4 leading-tight">
+                            سنتر الدروس التعليمي الجديد
+                        </h2>
+                        <p class="text-gray-300 text-lg mb-6 leading-relaxed">
+                            لأن نقل المعرفة وتأسيس الأجيال هو شغف حقيقي، أستعد حالياً لإطلاق صرح تعليمي جديد يقدم تجربة تعليمية مبتكرة، تجمع بين التميز الأكاديمي والبيئة المحفزة.
+                        </p>
+                        <div class="flex items-center gap-4">
+                            <div class="text-center bg-darker p-3 rounded-lg border border-gray-700 min-w-[80px]">
+                                <span class="block text-2xl font-black text-primary" id="days">--</span>
+                                <span class="text-xs text-gray-400">يوم</span>
+                            </div>
+                            <div class="text-center bg-darker p-3 rounded-lg border border-gray-700 min-w-[80px]">
+                                <span class="block text-2xl font-black text-primary" id="hours">--</span>
+                                <span class="text-xs text-gray-400">ساعة</span>
+                            </div>
+                            <div class="text-center bg-darker p-3 rounded-lg border border-gray-700 min-w-[80px]">
+                                <span class="block text-2xl font-black text-primary" id="minutes">--</span>
+                                <span class="text-xs text-gray-400">دقيقة</span>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-sm text-primary font-semibold">* ترقبوا الافتتاح الكبير قريباً!</p>
+                    </div>
+                    <div class="w-full md:w-1/3 flex justify-center">
+                        <div class="w-48 h-48 bg-darker rounded-full border-4 border-primary flex items-center justify-center shadow-[0_0_30px_rgba(245,158,11,0.3)] floating">
+                            <i class="fas fa-graduation-cap text-7xl text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-darker border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-black text-white mb-4">لنتحدث عن مشروعك</h2>
+                <div class="w-24 h-1 bg-primary mx-auto rounded-full"></div>
+                <p class="mt-4 text-gray-400 text-lg">سواء كنت تحتاج للجوكر في شركتك، أو تريد الاستفسار عن السنتر.</p>
+            </div>
+
+            <div class="max-w-3xl mx-auto bg-card p-8 rounded-2xl border border-gray-700 shadow-xl">
+                <form class="space-y-6" onsubmit="event.preventDefault(); alert('تم إرسال رسالتك بنجاح! سيتم التواصل معك قريباً.');">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">الاسم الكريم</label>
+                            <input type="text" class="w-full bg-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="أدخل اسمك" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">رقم الهاتف / الواتساب</label>
+                            <input type="tel" class="w-full bg-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="رقمك للتواصل" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">الموضوع</label>
+                        <select class="w-full bg-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                            <option>توظيف / استشارة أعمال</option>
+                            <option>خدمات تسويق وسوشيال ميديا</option>
+                            <option>خدمات تصميم ومونتاج</option>
+                            <option>استفسار عن سنتر الدروس</option>
+                            <option>أخرى</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">رسالتك</label>
+                        <textarea rows="4" class="w-full bg-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="كيف يمكنني مساعدتك؟" required></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-primary hover:bg-yellow-500 text-darker font-black text-lg py-4 rounded-lg transition-colors shadow-lg">
+                        إرسال الرسالة <i class="fas fa-paper-plane mr-2"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-10 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <a href="#" class="text-2xl font-black tracking-tighter text-white">
+                    حازم <span class="text-primary">محمد</span>
+                </a>
+                <p class="text-gray-500 text-sm mt-1">الجوكر الذي تحتاجه شركتك &copy; 2026</p>
+            </div>
+            <div class="flex space-x-6 space-x-reverse">
+                <a href="#" class="w-10 h-10 rounded-full bg-card border border-gray-700 flex items-center justify-center text-gray-400 hover:text-primary hover:border-primary transition-all">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-card border border-gray-700 flex items-center justify-center text-gray-400 hover:text-primary hover:border-primary transition-all">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-card border border-gray-700 flex items-center justify-center text-gray-400 hover:text-primary hover:border-primary transition-all">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-card border border-gray-700 flex items-center justify-center text-gray-400 hover:text-primary hover:border-primary transition-all">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                navbar.classList.add('shadow-lg');
+                navbar.style.backgroundColor = 'rgba(2, 6, 23, 0.95)';
+            } else {
+                navbar.classList.remove('shadow-lg');
+                navbar.style.backgroundColor = 'rgba(2, 6, 23, 0.9)';
+            }
+        });
+
+        // Reveal Animation on Scroll
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal(); // Trigger on load
+
+        // Fake Countdown Timer for the Center
+        // Set a date 30 days from now for demonstration
+        const countDownDate = new Date();
+        countDownDate.setDate(countDownDate.getDate() + 30);
+
+        const x = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countDownDate.getTime() - now;
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            
+            document.getElementById("days").innerHTML = days;
+            document.getElementById("hours").innerHTML = hours;
+            document.getElementById("minutes").innerHTML = minutes;
+            
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("days").innerHTML = "00";
+                document.getElementById("hours").innerHTML = "00";
+                document.getElementById("minutes").innerHTML = "00";
+            }
+        }, 1000);
     </script>
 </body>
 </html>
