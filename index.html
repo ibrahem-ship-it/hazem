@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rosey - الفخامة والندرة</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'rosey-cream': '#FDFBF7', 
+                        'rosey-gold': '#A78A5B',  
+                        'rosey-gold-dark': '#806840', 
+                        'rosey-gold-light': '#C5AE80', 
+                        'rosey-red': '#6B1F2B',   
+                        'rosey-green': '#3B5336', 
+                        'rosey-dark': '#2A2A2A',  
+                    },
+                    fontFamily: {
+                        'cinzel': ['Cinzel', 'serif'], 
+                        'playfair': ['Playfair Display', 'serif'],
+                        'tajawal': ['Tajawal', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #FDFBF7; 
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20.5V18H0v-2h20v-2H0v-2h20v-2H0V8h20V6H0V4h20V2H0V0h22v20h2V0h2v20h2V0h2v20h2V0h2v20h2V0h2v20h2v2H20v-1.5zM0 20h2v20H0V20zm4 0h2v20H4V20zm4 0h2v20H8V20zm4 0h2v20h-2V20zm4 0h2v20h-2V20zm4 4h20v2H20v-2zm0 4h20v2H20v-2zm0 4h20v2H20v-2zm0 4h20v2H20v-2z' fill='%23a78a5b' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+            color: #2A2A2A; 
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .text-gold-gradient {
+            background: linear-gradient(to bottom, #C5AE80 0%, #A78A5B 50%, #806840 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .border-gold-gradient {
+            border-image: linear-gradient(to right, #C5AE80, #A78A5B, #806840) 1;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #FDFBF7; }
+        ::-webkit-scrollbar-thumb { background: #A78A5B; border-radius: 10px; }
+    </style>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const App = () => {
+            const [activeView, setActiveView] = useState('home');
+            const [activeCategory, setActiveCategory] = useState('الكل');
+            
+            const [customStep, setCustomStep] = useState(1);
+            const [selectedType, setSelectedType] = useState(null); 
+            const [selectedChain, setSelectedChain] = useState(null); 
+            const [selectedCharm, setSelectedCharm] = useState(null); 
+
+            const categories = ['الكل', 'سلاسل', 'انسيالات', 'حلقان'];
+            
+            const dummyProducts = [
+                { id: 1, name: 'قلادة الملكة', category: 'سلاسل', qty: 3 },
+                { id: 2, name: 'سوار الليل', category: 'انسيالات', qty: 10 },
+                { id: 3, name: 'حلق اللؤلؤ', category: 'حلقان', qty: 0 },
+            ];
+
+            const filteredProducts = activeCategory === 'الكل' 
+                ? dummyProducts 
+                : dummyProducts.filter(p => p.category === activeCategory);
+
+            return (
+                <div className="min-h-screen relative flex flex-col pb-10">
+                    
+                    {/* Header Logo */}
+                    <header className="flex justify-center pt-10 pb-4 z-10 w-full">
+                        <div 
+                            className="flex flex-col items-center cursor-pointer transition-transform duration-300 hover:scale-105" 
+                            onClick={() => {setActiveView('home'); setCustomStep(1);}}
+                        >
+                            <img src="https://drive.google.com/uc?export=view&id=1pSjxTLzTJ6T07EEVIUOezJz9EPGm_j5T" alt="Rosey Logo" className="w-[300px] h-auto object-contain drop-shadow-md rounded-xl mix-blend-multiply" />
+                        </div>
+                    </header>
+
+                    {/* Home Screen */}
+                    {activeView === 'home' && (
+                        <main className="flex-grow flex flex-col items-center justify-between mt-4 z-10 relative h-[60vh]">
+                            
+                            <p className="text-2xl text-rosey-gold-dark font-tajawal font-light tracking-widest mt-6 text-center px-4 leading-relaxed">
+                                الفخامة والندرة.. <br/> <span className="text-rosey-red italic font-playfair text-3xl">تعكس تفردك</span>
+                            </p>
+                            
+                            <div className="absolute bottom-10 flex space-x-10 space-x-reverse">
+                                <button 
+                                    onClick={() => setActiveView('customizer')}
+                                    className="w-44 h-44 bg-rosey-cream border border-rosey-gold text-rosey-gold-dark text-2xl font-cinzel uppercase tracking-widest rounded-none hover:bg-rosey-gold hover:text-white transition duration-500 shadow-lg flex items-center justify-center text-center p-4 group relative overflow-hidden">
+                                    <div className="absolute inset-0 border-2 border-rosey-gold/50 m-2 transition-transform duration-500 group-hover:scale-95"></div>
+                                    <span className="relative z-10 font-tajawal font-medium">صمم<br/>قطعتك</span>
+                                </button>
+                                
+                                <button 
+                                    onClick={() => setActiveView('limited')}
+                                    className="w-44 h-44 bg-rosey-red text-rosey-cream text-2xl font-cinzel uppercase tracking-widest rounded-none hover:bg-white hover:text-rosey-red hover:border-rosey-red border border-transparent transition duration-500 shadow-lg flex items-center justify-center text-center p-4 group relative overflow-hidden">
+                                    <div className="absolute inset-0 border-2 border-white/30 m-2 transition-transform duration-500 group-hover:scale-95 group-hover:border-rosey-red/30"></div>
+                                    <span className="relative z-10 font-tajawal font-medium">الإصدارات<br/>المحدودة</span>
+                                </button>
+                            </div>
+                        </main>
+                    )}
+
+                    {/* Limited Editions Screen */}
+                    {activeView === 'limited' && (
+                        <section className="max-w-6xl mx-auto mt-4 p-4 z-10 relative w-full">
+                            <div className="flex items-center justify-center mb-10">
+                                <div className="h-[1px] bg-rosey-gold flex-grow max-w-[100px]"></div>
+                                <h2 className="text-4xl font-light text-center px-6 text-rosey-gold-dark font-tajawal">الإصدارات المحدودة</h2>
+                                <div className="h-[1px] bg-rosey-gold flex-grow max-w-[100px]"></div>
+                            </div>
+                            
+                            <div className="flex justify-center space-x-4 space-x-reverse mb-12">
+                                {categories.map(cat => (
+                                    <button 
+                                        key={cat}
+                                        onClick={() => setActiveCategory(cat)}
+                                        className={`px-8 py-2 text-lg rounded-none transition-all duration-300 border-b-2 font-tajawal ${
+                                            activeCategory === cat ? 'text-rosey-red border-rosey-red font-medium' : 'text-gray-500 border-transparent hover:text-rosey-gold hover:border-rosey-gold-light'
+                                        }`}>
+                                        {cat}
+                                    </button>
+                                ))}
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                                {filteredProducts.map(product => (
+                                    <div key={product.id} className="bg-white border border-rosey-gold-light/40 p-5 hover:shadow-xl transition-all duration-300 flex flex-col group relative overflow-hidden">
+                                        <div className="absolute top-0 right-0 w-16 h-16 bg-rosey-gold/10 rounded-bl-full -z-10 transition-transform group-hover:scale-150"></div>
+                                        
+                                        <div className="w-full h-72 bg-[#F8F5F0] flex items-center justify-center mb-6 relative border border-gray-100">
+                                            {product.qty === 0 && <div className="absolute inset-0 bg-white/80 backdrop-blur-[2px] flex items-center justify-center text-rosey-red font-bold text-3xl tracking-widest z-10 font-cinzel border-4 border-rosey-red/20 m-4">SOLD OUT</div>}
+                                            <span className="text-rosey-gold-light font-light text-sm italic">Image Placeholder</span>
+                                        </div>
+                                        
+                                        <h3 className="text-2xl mb-2 text-rosey-dark font-tajawal font-medium text-center">{product.name}</h3>
+                                        <div className="w-12 h-[1px] bg-rosey-gold/50 mx-auto mb-4"></div>
+                                        
+                                        <p className={`text-sm mb-6 text-center font-tajawal ${product.qty > 0 ? 'text-gray-500' : 'text-rosey-red font-medium'}`}>
+                                            الكمية المتبقية: {product.qty} / 10
+                                        </p>
+                                        
+                                        <button disabled={product.qty === 0} className={`mt-auto w-full py-4 rounded-none text-lg font-tajawal tracking-wide transition-colors ${product.qty > 0 ? 'bg-rosey-dark text-rosey-cream hover:bg-rosey-gold' : 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'}`}>
+                                            إضافة للعربة
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    )}
+
+                    {/* Customizer Screen */}
+                    {activeView === 'customizer' && (
+                        <section className="max-w-7xl mx-auto mt-4 p-4 flex flex-col md:flex-row gap-10 z-10 relative w-full">
+                            
+                            <div className="md:w-1/2 bg-white border border-rosey-gold/30 h-[700px] flex flex-col items-center justify-center p-8 shadow-sm relative">
+                                <div className="absolute top-4 left-4 w-4 h-4 border-t border-l border-rosey-gold"></div>
+                                <div className="absolute top-4 right-4 w-4 h-4 border-t border-r border-rosey-gold"></div>
+                                <div className="absolute bottom-4 left-4 w-4 h-4 border-b border-l border-rosey-gold"></div>
+                                <div className="absolute bottom-4 right-4 w-4 h-4 border-b border-r border-rosey-gold"></div>
+
+                                <h3 className="text-3xl font-light mb-10 text-rosey-gold-dark font-tajawal">معاينة التصميم</h3>
+                                
+                                <div className="w-72 h-72 border border-rosey-gold-light/50 flex items-center justify-center bg-[#FDFBF7] mb-10 shadow-inner rounded-full relative">
+                                    <div className="absolute inset-2 border border-dashed border-rosey-gold-light/40 rounded-full"></div>
+                                    <span className="text-rosey-gold-light text-sm text-center font-tajawal px-4">سيظهر التصميم المدمج هنا بشكل أنيق</span>
+                                </div>
+                                
+                                <div className="text-center space-y-4 text-rosey-dark font-tajawal w-full max-w-xs">
+                                    <div className="flex justify-between border-b border-gray-100 pb-2">
+                                        <span className="text-gray-500">القطعة:</span>
+                                        <span className="font-medium">{selectedType || '---'}</span>
+                                    </div>
+                                    <div className="flex justify-between border-b border-gray-100 pb-2">
+                                        <span className="text-gray-500">السلسلة:</span>
+                                        <span className="font-medium">{selectedChain ? `شكل ${selectedChain}` : '---'}</span>
+                                    </div>
+                                    <div className="flex justify-between pb-2">
+                                        <span className="text-gray-500">الدلاية:</span>
+                                        <span className="font-medium">{selectedCharm ? `رقم ${selectedCharm}` : '---'}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="md:w-1/2 flex flex-col gap-6">
+                                
+                                <div className="p-6 bg-white border border-rosey-gold/20 shadow-sm">
+                                    <h3 className="text-xl mb-4 text-rosey-dark font-tajawal border-r-4 border-rosey-red pr-3">1. اختر نوع القطعة</h3>
+                                    <div className="flex gap-4 mt-6">
+                                        {['سلسلة', 'انسيال', 'حلق'].map(type => (
+                                            <button key={type} onClick={() => {setSelectedType(type); setCustomStep(2);}} 
+                                                className={`flex-1 py-4 border rounded-none font-tajawal transition-all ${selectedType === type ? 'border-rosey-gold bg-rosey-gold text-white shadow-md' : 'border-gray-200 bg-gray-50/50 text-gray-600 hover:border-rosey-gold-light hover:bg-[#FDFBF7]'}`}>
+                                                {type}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className={`p-6 bg-white border border-rosey-gold/20 shadow-sm transition-all duration-500 ${customStep >= 2 ? 'opacity-100 translate-y-0' : 'opacity-40 pointer-events-none translate-y-4'}`}>
+                                    <h3 className="text-xl mb-4 text-rosey-dark font-tajawal border-r-4 border-rosey-red pr-3">2. شكل السلسلة</h3>
+                                    <div className="grid grid-cols-5 gap-3 mt-6">
+                                        {[1, 2, 3, 4, 5].map(chain => (
+                                            <button key={chain} onClick={() => {setSelectedChain(chain); setCustomStep(3);}} 
+                                                className={`aspect-square border flex items-center justify-center text-xs font-tajawal transition-all ${selectedChain === chain ? 'border-rosey-gold bg-rosey-gold/10 text-rosey-dark' : 'border-gray-200 bg-[#FDFBF7] hover:border-rosey-gold-light hover:shadow-sm text-gray-500'}`}>
+                                                نمط {chain}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className={`p-6 bg-white border border-rosey-gold/20 shadow-sm transition-all duration-500 flex-1 flex flex-col ${customStep >= 3 ? 'opacity-100 translate-y-0' : 'opacity-40 pointer-events-none translate-y-4'}`}>
+                                    <h3 className="text-xl mb-4 text-rosey-dark font-tajawal border-r-4 border-rosey-red pr-3">3. اختر الدلاية (100 تصميم فريد)</h3>
+                                    <div className="grid grid-cols-6 sm:grid-cols-8 gap-2 h-64 overflow-y-auto p-3 border border-gray-100 bg-[#F8F5F0]/50 mt-4">
+                                        {Array.from({length: 100}).map((_, i) => (
+                                            <button key={i} onClick={() => setSelectedCharm(i+1)} 
+                                                className={`aspect-square border flex items-center justify-center text-xs font-tajawal transition-all rounded-sm ${selectedCharm === i+1 ? 'border-rosey-gold bg-rosey-gold text-white shadow-md transform scale-110' : 'border-gray-200 bg-white hover:border-rosey-gold-light hover:bg-[#FDFBF7] text-gray-600'}`}>
+                                                {i + 1}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </section>
+                    )}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
